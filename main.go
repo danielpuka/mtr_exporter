@@ -187,6 +187,10 @@ func (e *Exporter) collect() error {
 
 		for tf := range results {
 			route := make([]net.IP, len(tf.Hosts))
+			if len(tf.Hosts)-1 < 0 {
+				log.Errorf("worker goroutine finished abnormally (len(hosts) -1) < 0 value %v", tf.Hosts)
+				continue
+			}
 			destination := tf.Hosts[len(tf.Hosts)-1].IP
 			for i, host := range tf.Hosts {
 				route[i] = host.IP
